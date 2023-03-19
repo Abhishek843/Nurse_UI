@@ -1,0 +1,142 @@
+<head>
+    <!-- Add Material UI CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
+    
+    <!-- Add Material UI JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.min.js"></script>
+  </head>
+  
+  <style>
+    .mdl-card__title-text {
+      font-size: 20px;
+      line-height: 24px;
+    }
+  </style>
+  
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--3-col mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Todays Patients</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <h2>231</h2>
+        <p>18% Higher Then Last Month</p>
+      </div>
+    </div>
+    
+    <div class="mdl-cell mdl-cell--3-col mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Appointments</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <h2>122</h2>
+        <p>21% Higher Then Last Month</p>
+      </div>
+    </div>
+    
+    <div class="mdl-cell mdl-cell--3-col mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Todays Operations</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <h2>28</h2>
+        <p>37% Higher Then Last Month</p>
+      </div>
+    </div>
+    
+    <div class="mdl-cell mdl-cell--3-col mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Online Appointment</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <h2>42</h2>
+        <p>10% Higher Then Last Month</p>
+      </div>
+    </div>
+  </div>
+  
+        <mat-card-header>
+          <mat-card-title>
+            All Appointments
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card class="table-card">
+  <mat-table #table [dataSource]="dataSource" matSort class="mat-cell" id="ptable">
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header  class="table-header">ID</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="square-box"> {{row.id}}</mat-cell>
+      </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header  class="table-header">Name</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
+    </ng-container>
+    <!-- Departmnet Column -->
+      <ng-container matColumnDef="department">
+        <mat-header-cell *matHeaderCellDef mat-sort-header  class="table-header">Department</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.department}}</mat-cell>
+      </ng-container>
+       <!-- speclization Column -->
+       <!-- <ng-container matColumnDef="speclization">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>speclization</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.speclization}}</mat-cell>
+      </ng-container> -->
+      <!-- Degree Column -->
+      <!-- <ng-container matColumnDef="degree">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Degree</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.degree}}</mat-cell>
+      </ng-container> -->
+       <!-- Mobile Column -->
+       <ng-container matColumnDef="mobile">
+        <mat-header-cell *matHeaderCellDef mat-sort-header  class="table-header">Mobile</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.mobile}}</mat-cell>
+      </ng-container>
+
+        <!-- Email Column -->
+      <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header  class="table-header">Email</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.email}}</mat-cell>
+    </ng-container> 
+    <!-- Action Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef class="table-header">More Details</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="onEdit()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
+  
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
+        </mat-card>
+    
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef class="table-header">More Details</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" (click)="onEdit()">
+              <mat-icon>Add info</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" aria-label="Delete">
+              <mat-icon>Prev History</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        
